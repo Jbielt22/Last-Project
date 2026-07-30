@@ -14,8 +14,15 @@ export default function AboutPage() {
           </p>
         </div>
 
-        <div className='w-full'>
-            <Image src='/profile.png' width='200' height='200' alt='foto' className='mx-auto rounded-2xl' />
+        {/* Section Foto Profil */}
+        <div className="flex justify-center">
+          <Image
+            src="/profile.png"
+            width={300}
+            height={100}
+            alt="Foto M. Jibriel"
+            className="rounded-2xl object-cover border border-gray-800/80 shadow-lg"
+          />
         </div>
 
         {/* Content Card */}
@@ -26,7 +33,10 @@ export default function AboutPage() {
               Halo, Saya M. Jibriel
             </h2>
             <p className="text-gray-300 leading-relaxed">
-              Saya adalah seorang siswa jurusan <span className="text-indigo-400 font-semibold">Rekayasa Perangkat Lunak (RPL)</span> yang memiliki ketertarikan mendalam pada pengembangan perangkat lunak, khususnya di bagian <span className="text-indigo-400 font-semibold">Backend Development</span> dan ekosistem modern web.
+              Saya adalah seorang siswa jurusan{' '}
+              <span className="text-indigo-400 font-semibold">Rekayasa Perangkat Lunak (RPL)</span>{' '}
+              yang memiliki ketertarikan mendalam pada pengembangan perangkat lunak, khususnya di bagian{' '}
+              <span className="text-indigo-400 font-semibold">Backend Development</span> dan ekosistem modern web.
             </p>
             <p className="text-gray-300 leading-relaxed">
               Saya terbiasa membangun RESTful API, mengelola basis data, serta mengimplementasikan sistem autentikasi yang aman. Saya selalu antusias untuk mempelajari teknologi baru dan menyelesaikan berbagai tantangan logika dalam pemrograman.
@@ -38,13 +48,17 @@ export default function AboutPage() {
             <div className="p-5 rounded-xl bg-gray-950/60 border border-gray-800/80">
               <h3 className="text-indigo-400 font-semibold mb-2">Pendidikan</h3>
               <p className="text-white font-medium">SMK - Rekayasa Perangkat Lunak</p>
-              <p className="text-gray-400 text-sm mt-1">Fokus pada Software Engineering & Web Development</p>
+              <p className="text-gray-400 text-sm mt-1">
+                Fokus pada Software Engineering & Web Development
+              </p>
             </div>
 
             <div className="p-5 rounded-xl bg-gray-950/60 border border-gray-800/80">
               <h3 className="text-indigo-400 font-semibold mb-2">Fokus Utama</h3>
               <p className="text-white font-medium">Backend & Fullstack Web</p>
-              <p className="text-gray-400 text-sm mt-1">Node.js, Express, Next.js, & Database Management</p>
+              <p className="text-gray-400 text-sm mt-1">
+                Node.js, Express, Next.js, & Database Management
+              </p>
             </div>
           </div>
         </div>

@@ -24,13 +24,13 @@ export default function Home() {
         {/* Tombol Aksi */}
         <div className="flex flex-wrap items-center justify-center gap-4">
           <a
-            href="#portfolio"
+            href="portfolio"
             className="px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-medium transition-all shadow-lg shadow-purple-500/25 active:scale-95"
           >
             Lihat Portfolio
           </a>
           <a
-            href="#contact"
+            href="contact"
             className="px-6 py-3 rounded-xl border border-slate-700 hover:border-slate-500 bg-slate-900/40 text-slate-200 font-medium transition-all active:scale-95"
           >
             Hubungi Saya
