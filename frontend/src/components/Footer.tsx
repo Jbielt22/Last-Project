@@ -8,9 +8,18 @@ const quickLinks = [
 ];
 
 const socialLinks = [
-  { href: "#", label: "GitHub" },
-  { href: "#", label: "LinkedIn" },
-  { href: "#", label: "Instagram" },
+  { 
+    href: "https://github.com/Jbielt22/Last-Project.git", 
+    label: "GitHub" 
+  },
+  { 
+    href: "https://id.linkedin.com/in/jibril-pratama-80aa03426", 
+    label: "LinkedIn" 
+  },
+  { 
+    href: "https://www.instagram.com/jbrielprtama", 
+    label: "Instagram" 
+  },
 ];
 
 export default function Footer() {

@@ -1,46 +1,132 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { getProjects, Project } from "../../data/mockData";
+import SkeletonCard from "../../components/SkeletonCard";
+
+const categories = ["All", "Web Dev", "Mobile App", "UI/UX"];
+
 export default function PortfolioPage() {
-  const projects = [
-    {
-      title: "Vintage Store E-Commerce",
-      category: "Fullstack / Backend",
-      desc: "Aplikasi toko online baju vintage lengkap dengan sistem autentikasi JWT dan manajemen produk.",
-      tech: ["Node.js", "Express", "Next.js", "MySQL"],
-    },
-    {
-      title: "REST API Authentication System",
-      category: "Backend Development",
-      desc: "Backend API khusus untuk registrasi, login, penanganan token, dan enkripsi password aman.",
-      tech: ["Node.js", "JWT", "Bcrypt", "Postman"],
-    },
-  ];
+  const [projectsList, setProjectsList] = useState<Project[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchProjects() {
+      try {
+        setLoading(true);
+        const data = await getProjects();
+        setProjectsList(data);
+      } catch (error) {
+        console.error("Failed to fetch projects:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchProjects();
+  }, []);
+
+  const filteredProjects =
+    selectedCategory === "All"
+      ? projectsList
+      : projectsList.filter((p) => p.category === selectedCategory);
 
   return (
-    <div className="min-h-screen bg-[#070913] text-white py-24 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto space-y-10">
-        <div className="text-center space-y-3">
-          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight">
-            Project <span className="text-indigo-400">Portofolio</span>
+    <section className="py-16 sm:py-20 min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+            My{" "}
+            <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
+              Projects
+            </span>
           </h1>
-          <p className="text-gray-400">Kumpulan project nyata yang pernah saya bangun.</p>
+          <p className="text-gray-400 max-w-xl mx-auto">
+            Kumpulan proyek yang telah saya kerjakan dalam web development, mobile app development, dan desain UI/UX.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {projects.map((proj, idx) => (
-            <div key={idx} className="bg-gray-900/50 border border-gray-800/80 rounded-2xl p-6 backdrop-blur-sm shadow-xl space-y-4">
-              <span className="text-xs text-indigo-400 font-medium">{proj.category}</span>
-              <h2 className="text-2xl font-bold text-white">{proj.title}</h2>
-              <p className="text-gray-400 text-sm leading-relaxed">{proj.desc}</p>
-              <div className="flex flex-wrap gap-2 pt-2">
-                {proj.tech.map((t, tIdx) => (
-                  <span key={tIdx} className="text-xs px-2.5 py-1 rounded bg-gray-950 text-gray-300 border border-gray-800">
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
+        {/* Tab Filter */}
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 cursor-pointer ${
+                selectedCategory === category
+                  ? "bg-gradient-to-r from-indigo-500 to-violet-500 text-white shadow-lg shadow-indigo-500/25"
+                  : "bg-gray-900/50 border border-gray-800/50 text-gray-400 hover:text-white hover:border-gray-700"
+              }`}
+            >
+              {category}
+            </button>
           ))}
         </div>
+
+        {/* Grid Project */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {loading
+            ? Array.from({ length: 6 }).map((_, i) => (
+                <SkeletonCard key={i} />
+              ))
+            : filteredProjects.map((project) => (
+                <div
+                  key={project.id}
+                  className="group flex flex-col h-full rounded-2xl bg-gray-900/50 border border-gray-800/50 overflow-hidden hover:border-indigo-500/30 hover:-translate-y-1 transition-all duration-300"
+                >
+                  {/* Thumbnail */}
+                  <div className="aspect-video bg-gradient-to-br from-indigo-500/10 to-violet-500/10 flex items-center justify-center border-b border-gray-800/50 group-hover:from-indigo-500/15 group-hover:to-violet-500/15 transition-all duration-300">
+                    <span className="text-4xl group-hover:scale-110 transition-transform duration-300">
+                      🚀
+                    </span>
+                  </div>
+
+                  {/* Body */}
+                  <div className="p-6 flex flex-col flex-1">
+                    <span className="text-xs text-indigo-400 font-semibold uppercase tracking-wider mb-2">
+                      {project.category}
+                    </span>
+                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors duration-300">
+                      {project.title}
+                    </h3>
+                    <p className="text-gray-400 text-sm mb-6 flex-1 leading-relaxed">
+                      {project.description}
+                    </p>
+
+                    {/* Tech Tags */}
+                    <div className="flex flex-wrap gap-1.5 mb-6">
+                      {project.tech.map((t, i) => (
+                        <span
+                          key={i}
+                          className="px-2.5 py-1 text-xs rounded-md bg-gray-800 text-gray-300 border border-gray-700/50"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Links */}
+                    <div className="flex items-center gap-4 pt-4 border-t border-gray-800/50 mt-auto">
+                      <a
+                        href={project.demoUrl}
+                        className="text-sm font-semibold text-white hover:text-indigo-400 transition-colors duration-300 flex items-center gap-1"
+                      >
+                        Live Demo <span className="text-xs">↗</span>
+                      </a>
+                      <a
+                        href={project.githubUrl}
+                        className="text-sm text-gray-400 hover:text-white transition-colors duration-300 flex items-center gap-1"
+                      >
+                        GitHub <span className="text-xs">↗</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
