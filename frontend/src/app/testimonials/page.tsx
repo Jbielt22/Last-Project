@@ -1,79 +1,67 @@
-"use client";
+import React from 'react';
 
-import { useState, useEffect } from "react";
-import { testimonials, Testimonial } from "../../data/mockData";
-import SkeletonCard from "../../components/SkeletonCard";
-
-export default function TestimonialPage() {
-  const [data, setData] = useState<Testimonial[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setData(testimonials);
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
+export default function TestimonialsPage() {
+  const testimonials = [
+    {
+      quote:
+        '"Siswa yang memiliki etos kerja tinggi dan pemahaman koding yang sangat baik."',
+      name: 'Alif Anhar',
+      role: 'Guru Produktif RPL • SMK Negeri',
+      avatar: '👨‍🏫',
+    },
+    {
+      quote:
+        '"Kolaborasi dalam pembuatan backend dan manajemen database sangat rapi."',
+      name: 'Ali Akbar',
+      role: 'Fullstack Developer • Partner Tim',
+      avatar: '💻',
+    },
+  ];
 
   return (
-    <section className="py-16 sm:py-20 min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
-            Testimonials &{" "}
-            <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
-              Reviews
-            </span>
+    <main className="min-h-screen bg-[#0b0f19] text-white py-16 px-6">
+      <div className="max-w-6xl mx-auto">
+        {/* Header Section */}
+        <div className="text-center max-w-xl mx-auto mb-16">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
+            Testimonials & <span className="text-indigo-400">Reviews</span>
           </h1>
-          <p className="text-gray-400 max-w-xl mx-auto">
+          <p className="mt-4 text-slate-400 text-sm md:text-base leading-relaxed">
             Apa pendapat para guru dan rekan sejawat mengenai kodingan, keterampilan, dan etos kerja saya.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {isLoading
-            ? Array.from({ length: 3 }).map((_, index) => (
-                <SkeletonCard key={index} variant="testimonial" />
-              ))
-            : data.map((test) => (
-                <div
-                  key={test.id}
-                  className="p-6 sm:p-8 rounded-2xl bg-gray-900/50 border border-gray-800/50 hover:border-indigo-500/30 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="flex gap-1 mb-6">
-                      {Array.from({ length: test.stars }).map((_, i) => (
-                        <span key={i} className="text-amber-400 text-lg">
-                          ★
-                        </span>
-                      ))}
-                    </div>
-
-                    <blockquote className="text-gray-300 text-sm leading-relaxed font-normal italic mb-8">
-                      "{test.quote}"
-                    </blockquote>
-                  </div>
-
-                  <div className="flex items-center gap-4 pt-6 border-t border-gray-800/50 mt-auto">
-                    <div className="w-12 h-12 rounded-full bg-indigo-500/10 flex items-center justify-center text-2xl border border-indigo-500/20 shrink-0">
-                      {test.avatar || "👤"}
-                    </div>
-                    <div>
-                      <h4 className="text-base font-bold text-white leading-tight">
-                        {test.name}
-                      </h4>
-                      <p className="text-xs text-gray-400 mt-0.5">
-                        {test.role} •{" "}
-                        <span className="text-indigo-400">{test.company}</span>
-                      </p>
-                    </div>
-                  </div>
+        {/* Testimonials Cards Container */}
+        <div className="flex flex-col md:flex-row justify-center items-stretch gap-6 max-w-4xl mx-auto">
+          {testimonials.map((item, index) => (
+            <div
+              key={index}
+              className="flex-1 bg-[#131927]/80 border border-slate-800/80 rounded-2xl p-6 shadow-xl hover:border-indigo-500/40 transition duration-300 flex flex-col justify-between"
+            >
+              {/* Rating & Quote */}
+              <div className="space-y-4">
+                <div className="flex gap-1 text-amber-400 text-sm">
+                  {"★".repeat(5)}
                 </div>
-              ))}
+                <p className="text-slate-300 italic text-sm leading-relaxed">
+                  {item.quote}
+                </p>
+              </div>
+
+              {/* Profile / Author Section */}
+              <div className="pt-6 mt-6 border-t border-slate-800/60 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-slate-800/80 flex items-center justify-center text-lg border border-slate-700/50">
+                  {item.avatar}
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-white">{item.name}</h4>
+                  <p className="text-xs text-slate-400">{item.role}</p>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-    </section>
+    </main>
   );
 }

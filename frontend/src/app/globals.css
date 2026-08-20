@@ -4,7 +4,7 @@ html {
   scroll-behavior: smooth;
 }
 
-/*ini adalah scrollbar tema dark */
+/* Scrollbar Tema Dark */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -22,4 +22,18 @@ html {
   background: #4b5563;
 }
 
+/* Animasi Fade In & Transition Global */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
+body {
+  animation: fadeIn 0.4s ease-in-out;
+}
