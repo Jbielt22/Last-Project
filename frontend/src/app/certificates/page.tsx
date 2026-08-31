@@ -1,18 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getCertificates, Certificate } from "../../data/mockData";
+import { fetchCertificates } from "../../data/api";
+import { Certificate } from "../../data/mockData";
 import SkeletonCard from "../../components/SkeletonCard";
 
-export default function CertificatesPage() {
+export default function CertificatePage() {
   const [certificatesList, setCertificatesList] = useState<Certificate[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchCertificates() {
+    async function getCertificates() {
       try {
         setLoading(true);
-        const data = await getCertificates();
+        const data = await fetchCertificates();
         setCertificatesList(data);
       } catch (error) {
         console.error("Failed to fetch certificates:", error);
@@ -20,8 +21,7 @@ export default function CertificatesPage() {
         setLoading(false);
       }
     }
-
-    fetchCertificates();
+    getCertificates();
   }, []);
 
   return (
@@ -30,54 +30,59 @@ export default function CertificatesPage() {
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
-            Certificates &{" "}
-            <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
-              Achievements
+            My{" "}
+            <span className="bg-linear-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
+              Certificates
             </span>
           </h1>
           <p className="text-gray-400 max-w-xl mx-auto">
-            Sertifikasi dan pencapaian yang telah saya dapatkan.
+            Sertifikasi keahlian dan pencapaian akademik yang saya raih selama menempuh pendidikan di bidang Informatika.
           </p>
         </div>
 
-        {/* Certificates Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {loading
-            ? Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)
+            ? Array.from({ length: 3 }).map((_, i) => (
+                <SkeletonCard key={i} variant="certificate" />
+              ))
             : certificatesList.map((cert) => (
                 <div
                   key={cert.id}
-                  className="group flex flex-col h-full rounded-2xl bg-gray-900/50 border border-gray-800/50 p-6 hover:border-indigo-500/30 transition-all duration-300"
+                  className="group p-6 rounded-2xl bg-gray-900/50 border border-gray-800/50 hover:border-indigo-500/30 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
                 >
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-3xl">📜</span>
-                    <span className="text-xs px-2.5 py-1 rounded-md bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
-                      {cert.date}
-                    </span>
+                  <div>
+                    <div className="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center mb-6 group-hover:bg-indigo-500/20 transition-colors">
+                      <span className="text-2xl">🎓</span>
+                    </div>
+
+                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors duration-300 leading-snug">
+                      {cert.title}
+                    </h3>
+
+                    <p className="text-indigo-300 text-sm font-semibold mb-4">
+                      {cert.issuer}
+                    </p>
+
+                    <div className="space-y-1.5 text-xs text-gray-500">
+                      <div>
+                        <span className="font-medium text-gray-400">Diterbitkan: </span>
+                        {cert.date}
+                      </div>
+                      <div>
+                        <span className="font-medium text-gray-400">ID Kredensial: </span>
+                        {cert.credentialUrl}
+                      </div>
+                    </div>
                   </div>
 
-                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors duration-300">
-                    {cert.title}
-                  </h3>
-
-                  <p className="text-sm font-medium text-indigo-300 mb-3">
-                    {cert.issuer}
-                  </p>
-
-                  {cert.description && (
-                    <p className="text-gray-400 text-sm mb-6 flex-1 leading-relaxed">
-                      {cert.description}
-                    </p>
-                  )}
-
-                  <div className="pt-4 border-t border-gray-800/50 mt-auto">
+                  <div className="mt-8 pt-4 border-t border-gray-800/50">
                     <a
-                      href={cert.credentialUrl}
+                      href={cert.verificationUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-400 hover:text-indigo-300 transition-colors duration-300"
+                      className="inline-flex items-center gap-1 text-sm font-semibold text-white hover:text-indigo-400 transition-colors duration-300"
                     >
-                      Lihat Sertifikat (PDF) <span>↗</span>
+                      Lihat Kredensial <span className="text-xs">↗</span>
                     </a>
                   </div>
                 </div>

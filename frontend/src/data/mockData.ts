@@ -32,6 +32,7 @@ export interface Project {
 }
 
 export interface Certificate {
+  verificationUrl: string | undefined;
   id: number;
   title: string;
   issuer: string;
@@ -132,6 +133,7 @@ export const certificates: Certificate[] = [
     credentialUrl: "/jibe-sertif-asean.pdf",
     category: "Artificial Intelligence",
     description: "Menyelesaikan 12 modul pembelajaran AI mencakup Generative AI, Prompt Engineering, AI Ethics, dan Pengembangan Alat Berbasis AI.",
+    verificationUrl: undefined
   },
 ];
 

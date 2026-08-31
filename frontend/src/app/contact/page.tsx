@@ -1,4 +1,67 @@
+"use client";
+
+import { useState } from "react";
+import { sendContactMessage } from "../../data/api";
+
 export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<{
+    success: boolean;
+    text: string;
+  } | null>(null);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email || !formData.message) {
+      setStatus({
+        success: false,
+        text: "Semua kolom wajib diisi kecuali subject.",
+      });
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setStatus(null);
+      const res = await sendContactMessage(formData);
+      if (res.success) {
+        setStatus({
+          success: true,
+          text: "Pesan berhasil dikirim dan disimpan ke database!",
+        });
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        setStatus({
+          success: false,
+          text: res.message || "Gagal mengirim pesan.",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      setStatus({
+        success: false,
+        text: "Gagal menghubungi server backend.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       {/* ini header */}
@@ -6,8 +69,8 @@ export default function ContactPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
             <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
-              Contact{' '}
-              <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
+              Contact{" "}
+              <span className="bg-linear-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
                 Me
               </span>
             </h1>
@@ -24,7 +87,20 @@ export default function ContactPage() {
                 Kirim Pesan
               </h2>
 
-              <form className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Feedback Status */}
+                {status && (
+                  <div
+                    className={`p-4 rounded-xl text-sm border ${
+                      status.success
+                        ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                        : "bg-rose-500/10 text-rose-400 border-rose-500/20"
+                    }`}
+                  >
+                    {status.text}
+                  </div>
+                )}
+
                 {/* Nama */}
                 <div>
                   <label
@@ -37,8 +113,10 @@ export default function ContactPage() {
                     type="text"
                     id="name"
                     name="name"
+                    value={formData.name}
+                    onChange={handleChange}
                     placeholder="Masukkan nama anda"
-                    className="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-700/50 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500"
+                    className="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-700/50 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25 transition-all duration-300"
                   />
                 </div>
 
@@ -54,8 +132,10 @@ export default function ContactPage() {
                     type="email"
                     id="email"
                     name="email"
+                    value={formData.email}
+                    onChange={handleChange}
                     placeholder="contoh@email.com"
-                    className="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-700/50 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500"
+                    className="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-700/50 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25 transition-all duration-300"
                   />
                 </div>
 
@@ -71,8 +151,10 @@ export default function ContactPage() {
                     type="text"
                     id="subject"
                     name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
                     placeholder="Tentang apa?"
-                    className="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-700/50 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500"
+                    className="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-700/50 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25 transition-all duration-300"
                   />
                 </div>
 
@@ -88,47 +170,51 @@ export default function ContactPage() {
                     id="message"
                     name="message"
                     rows={5}
+                    value={formData.message}
+                    onChange={handleChange}
                     placeholder="Tulis pesan anda di sini..."
-                    className="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-700/50 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500"
+                    className="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-700/50 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25 transition-all duration-300 resize-none"
                   />
                 </div>
 
-                {/* Tombol Submit */}
+                {/* tombol submit */}
                 <button
-                  type="button"
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-500 text-white font-semibold hover:from-indigo-600 hover:to-violet-600 transition-all shadow-lg shadow-indigo-500/25"
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-3 rounded-xl bg-linear-to-r from-indigo-500 to-violet-500 text-white font-semibold hover:from-indigo-400 hover:to-violet-400 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/25 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Kirim Pesan
+                  {loading ? "Mengirim..." : "Kirim Pesan"}
                 </button>
               </form>
 
               <p className="text-gray-500 text-xs mt-4 text-center">
-                * Form ini belum fungsional. Akan dikoneksikan ke backend di
-                pertemuan selanjutnya.
+                * Hubungi saya melalui formulir di atas untuk berdiskusi.
               </p>
             </div>
 
-            {/* Info Kontak & Sosial Media */}
+            {/* info kontak */}
             <div className="space-y-6">
               {/* Info Card */}
               {[
                 {
                   icon: "📧",
                   title: "Email",
-                  value: "jibe@gmail.com",
-                  description: "Kirim email kapan saja, saya akan membalas secepatnya.",
+                  value: "alif@example.com",
+                  description:
+                    "Kirim email kapan saja, saya akan membalas secepatnya.",
                 },
                 {
                   icon: "📱",
                   title: "Telepon",
-                  value: "+62 812-1230-6788",
-                  description: "Tersedia jika uang juga sedia",
+                  value: "+62 812-xxxx-xxxx",
+                  description: "Tersedia di jam sekolah (08.00 - 15.00 WIB).",
                 },
                 {
                   icon: "📍",
                   title: "Lokasi",
                   value: "Indonesia",
-                  description: "Bisa bekerja sama secara remote maupun offline.",
+                  description:
+                    "Bisa bekerja sama secara remote maupun offline.",
                 },
               ].map((item) => (
                 <div
@@ -136,7 +222,7 @@ export default function ContactPage() {
                   className="group p-6 rounded-2xl bg-gray-900/50 border border-gray-800/50 hover:border-indigo-500/30 transition-all duration-300"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center shrink-0 group-hover:bg-indigo-500/20 transition-colors">
+                    <div className="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center shrink-0 group-hover:bg-indigo-500/20 transition-colors duration-300">
                       <span className="text-2xl">{item.icon}</span>
                     </div>
                     <div>
@@ -160,7 +246,7 @@ export default function ContactPage() {
                     <a
                       key={social}
                       href="#"
-                      className="px-4 py-2 rounded-xl bg-gray-800/50 border border-gray-700/50 text-gray-400 text-sm hover:text-white hover:border-indigo-500/50 transition-all"
+                      className="px-4 py-2 rounded-xl bg-gray-800/50 border border-gray-700/50 text-gray-400 text-sm hover:text-white hover:border-indigo-500/30 hover:bg-indigo-500/10 transition-all duration-300"
                     >
                       {social}
                     </a>
