@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { fetchCertificates } from "../../data/api";
 import { Certificate } from "../../data/mockData";
-import SkeletonCard from "../../components/SkeletonCard";
+import SkeletonCard from "../../components/admin/SkeletonCard";
 
 export default function CertificatePage() {
   const [certificatesList, setCertificatesList] = useState<Certificate[]>([]);

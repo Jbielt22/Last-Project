@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { fetchProjects } from "@/src/data/api";
 import { Project } from "@/src/data/mockData";
-import SkeletonCard from "@/src/components/SkeletonCard";
+import SkeletonCard from "@/src/components/admin/SkeletonCard";
 
 const categories = ["All", "Web Dev", "Mobile App", "UI/UX"];
 

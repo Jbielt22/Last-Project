@@ -25,7 +25,7 @@ export default function Navbar() {
           {/* Logo dengan Efek Active & Hover */}
           <Link
             href="/"
-            className="text-xl font-bold bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent hover:from-indigo-300 hover:to-violet-300 active:scale-95 transition-all duration-300"
+            className="text-xl font-bold bg-linear-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent hover:from-indigo-300 hover:to-violet-300 active:scale-95 transition-all duration-300"
           >
             MyPortofolio
           </Link>
@@ -59,7 +59,7 @@ export default function Navbar() {
             <div className="flex flex-col items-center justify-center gap-1.5 w-5">
               <span
                 className={`block w-5 h-0.5 bg-current transition-all duration-300 transform origin-center ${
-                  mobileOpen ? "rotate-45 translate-y-[8px]" : ""
+                  mobileOpen ? "rotate-45 translate-y-2" : ""
                 }`}
               />
               <span
@@ -69,7 +69,7 @@ export default function Navbar() {
               />
               <span
                 className={`block w-5 h-0.5 bg-current transition-all duration-300 transform origin-center ${
-                  mobileOpen ? "-rotate-45 -translate-y-[8px]" : ""
+                  mobileOpen ? "-rotate-45 -translate-y-2" : ""
                 }`}
               />
             </div>
@@ -80,7 +80,7 @@ export default function Navbar() {
       {/* MENU UNTUK MOBILE */}
       <div
         className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden ${
-          mobileOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
+          mobileOpen ? "max-h-100 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
         <div className="px-4 py-3 space-y-1 bg-gray-950/95 backdrop-blur-xl border-t border-gray-800/50">

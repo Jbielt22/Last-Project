@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { fetchTestimonials } from "../../data/api";
 import { Testimonial } from "../../data/mockData";
-import SkeletonCard from "../../components/SkeletonCard";
+import SkeletonCard from "../../components/admin/SkeletonCard";
 
 export default function TestimonialPage() {
   const [testimonialsList, setTestimonialsList] = useState<Testimonial[]>([]);
